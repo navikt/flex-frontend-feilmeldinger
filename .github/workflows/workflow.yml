@@ -90,13 +90,6 @@ jobs:
           command: test
           args: --org=flex-kmy --severity-threshold=critical --project-name=${{ github.repository }} --remote-repo-url=https://github.com/${{ github.repository }}.git
 
-  snyk-docker:
-    needs: build-and-publish
-    uses: navikt/flex-github-actions-workflows/.github/workflows/snyk-docker.yml@master
-    with:
-      image: ${{ needs.build-and-publish.outputs.image }}
-    secrets: inherit
-
   nais-deploy:
     needs: build-and-publish
     uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@master
