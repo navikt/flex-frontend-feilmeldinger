@@ -9,12 +9,12 @@ import java.time.OffsetDateTime
 @Repository
 interface FeilmeldingRepository : CrudRepository<FeilmeldingDbRecord, String>
 
-@Table("payload")
+@Table("feilmelding")
 data class FeilmeldingDbRecord(
     @Id
     val id: String? = null,
-    val frontendApp: String,
     val opprettet: OffsetDateTime,
     val requestId: String,
+    val app: String,
     val payload: String
 )

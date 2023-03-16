@@ -25,7 +25,7 @@ class IntegrationTest : FellesTestOppsett() {
     fun `202 ACCEPTED blir returnert ved gyldig feilmelding`() {
         val feilmeldingDto = FeilmeldingDto(
             requestId = "uuid-1",
-            frontendApp = FrontendApp.SPINNSYN_FRONTEND.toString(),
+            app = FrontendApp.SPINNSYN_FRONTEND.toString(),
             payload = "{\"foo\": \"foo\", \"bar\": \"bar\"}"
         )
 
@@ -40,17 +40,17 @@ class IntegrationTest : FellesTestOppsett() {
         val lagredeFeilmeldigner = feilmeldingRepository.findAll()
         lagredeFeilmeldigner shouldHaveSize 1
         val lagretFeilmelding = lagredeFeilmeldigner.first()
-        lagretFeilmelding.payload shouldBeEqualTo feilmeldingDto.payload
-        lagretFeilmelding.requestId shouldBeEqualTo feilmeldingDto.requestId
-        lagretFeilmelding.frontendApp shouldBeEqualTo feilmeldingDto.frontendApp
         lagretFeilmelding.opprettet shouldBeLessOrEqualTo OffsetDateTime.now()
+        lagretFeilmelding.requestId shouldBeEqualTo feilmeldingDto.requestId
+        lagretFeilmelding.app shouldBeEqualTo feilmeldingDto.app
+        lagretFeilmelding.payload shouldBeEqualTo feilmeldingDto.payload
     }
 
     @Test
     fun `202 ACCEPTED blir returnert selv om appliasjon ikke i listen over tillatte applikasjoner`() {
         val feilmeldingDto = FeilmeldingDto(
             requestId = "uuid-1",
-            frontendApp = "UKJENT",
+            app = "UKJENT",
             payload = "{\"foo\": \"foo\", \"bar\": \"bar\"}"
         )
 

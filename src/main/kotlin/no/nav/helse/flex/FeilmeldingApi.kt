@@ -16,17 +16,17 @@ class FeilmeldingApi(
 
     private val log = logger()
 
-    val gyldigeApplikasjoner = FrontendApp.values().map {
+    val frontendApplikasjoner = FrontendApp.values().map {
         it.toString()
     }
 
     @PostMapping("/feilmelding")
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun postFeilmelding(@RequestBody feilmeldingDto: FeilmeldingDto) {
-        if (feilmeldingDto.frontendApp in gyldigeApplikasjoner) {
+        if (feilmeldingDto.app in frontendApplikasjoner) {
             lagreFeilmelding(feilmeldingDto)
         } else {
-            log.warn("Mottok feilmelding fra ukjent frontendApp: ${feilmeldingDto.frontendApp}")
+            log.warn("Mottok feilmelding fra ukjent app: ${feilmeldingDto.app}")
         }
     }
 
@@ -34,9 +34,9 @@ class FeilmeldingApi(
         try {
             feilmeldingRepository.save(
                 FeilmeldingDbRecord(
-                    frontendApp = feilmeldingDto.frontendApp,
                     opprettet = OffsetDateTime.now(),
                     requestId = feilmeldingDto.requestId,
+                    app = feilmeldingDto.app,
                     payload = feilmeldingDto.payload
                 )
             )
@@ -48,7 +48,7 @@ class FeilmeldingApi(
 
 data class FeilmeldingDto(
     val requestId: String,
-    val frontendApp: String,
+    val app: String,
     val payload: String
 )
 
