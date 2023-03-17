@@ -25,7 +25,7 @@ class IntegrationTest : FellesTestOppsett() {
     fun `202 ACCEPTED blir returnert ved gyldig feilmelding`() {
         val feilmeldingDto = FeilmeldingDto(
             requestId = "uuid-1",
-            app = FrontendApp.SPINNSYN_FRONTEND.toString(),
+            app = FrontendApp.SPINNSYN_FRONTEND.navn,
             payload = "{\"foo\": \"foo\", \"bar\": \"bar\"}"
         )
 

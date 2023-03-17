@@ -17,7 +17,7 @@ class FeilmeldingApi(
     private val log = logger()
 
     val frontendApplikasjoner = FrontendApp.values().map {
-        it.toString()
+        it.navn
     }
 
     @PostMapping("/feilmelding")
@@ -52,8 +52,8 @@ data class FeilmeldingDto(
     val payload: String
 )
 
-enum class FrontendApp {
-    SPINNSYN_FRONTEND,
-    SYKPENGESOKNAD_FRONTEND,
-    DITT_SYKEFRAVAER;
+enum class FrontendApp(val navn: String) {
+    SPINNSYN_FRONTEND("spinnsyn-frontend"),
+    SYKPENGESOKNAD_FRONTEND("sykepengesoknad-frontend"),
+    DITT_SYKEFRAVAER("ditt-sykefravaer");
 }
