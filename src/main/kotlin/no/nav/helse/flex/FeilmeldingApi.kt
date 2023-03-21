@@ -1,6 +1,7 @@
 package no.nav.helse.flex
 
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,6 +22,7 @@ class FeilmeldingApi(
     }
 
     @PostMapping("/feilmelding")
+    @CrossOrigin
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun postFeilmelding(@RequestBody feilmeldingDto: FeilmeldingDto) {
         if (feilmeldingDto.app in frontendApplikasjoner) {
@@ -37,7 +39,10 @@ class FeilmeldingApi(
                     opprettet = OffsetDateTime.now(),
                     requestId = feilmeldingDto.requestId,
                     app = feilmeldingDto.app,
-                    payload = feilmeldingDto.payload
+                    payload = feilmeldingDto.payload,
+                    method = feilmeldingDto.method,
+                    responseCode = feilmeldingDto.responseCode,
+                    contentLength = feilmeldingDto.contentLength
                 )
             )
         } catch (e: Exception) {
@@ -49,7 +54,10 @@ class FeilmeldingApi(
 data class FeilmeldingDto(
     val requestId: String,
     val app: String,
-    val payload: String
+    val payload: String,
+    val method: String,
+    val responseCode: Int,
+    val contentLength: Int
 )
 
 enum class FrontendApp(val navn: String) {
