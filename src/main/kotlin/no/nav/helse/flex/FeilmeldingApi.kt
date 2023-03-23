@@ -1,14 +1,16 @@
 package no.nav.helse.flex
 
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.time.OffsetDateTime
 
 @RestController
+@CrossOrigin
 @RequestMapping("/syk/feilmeldinger/api/v1")
 class FeilmeldingApi(
     private val feilmeldingRepository: FeilmeldingRepository
@@ -21,13 +23,23 @@ class FeilmeldingApi(
     }
 
     @PostMapping("/feilmelding")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    fun postFeilmelding(@RequestBody feilmeldingDto: FeilmeldingDto) {
+    fun postFeilmelding(@RequestBody feilmeldingDto: FeilmeldingDto): ResponseEntity<Any> {
         if (feilmeldingDto.app in frontendApplikasjoner) {
             lagreFeilmelding(feilmeldingDto)
         } else {
             log.warn("Mottok feilmelding fra ukjent app: ${feilmeldingDto.app}")
         }
+        return ResponseEntity<Any>(HttpStatus.ACCEPTED)
+    }
+
+    @PostMapping("/ok")
+    fun ok(@RequestBody feilmeldingDto: FeilmeldingDto): ResponseEntity<Any> {
+        if (feilmeldingDto.app in frontendApplikasjoner) {
+            lagreFeilmelding(feilmeldingDto)
+        } else {
+            log.warn("Mottok feilmelding fra ukjent app: ${feilmeldingDto.app}")
+        }
+        return ResponseEntity<Any>(HttpStatus.OK)
     }
 
     private fun lagreFeilmelding(feilmeldingDto: FeilmeldingDto) {
